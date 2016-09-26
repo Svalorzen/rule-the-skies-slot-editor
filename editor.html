@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <style>
+            html, body { margin:0; padding:0; overflow:hidden }
+            svg { float:right; top:0; left:0; height:100%; width:50% }
+            .ext-armor {
+                fill: #9a36ff;
+                stroke: #000000;
+                stroke-width: 2.62800002;
+            }
+
+            .lvl-1 {
+                fill: #0000ff;
+                stroke: #000000;
+                stroke-width: 2.62800002;
+            }
+            .lvl-2 {
+                fill: #0088ff;
+                stroke: #000000;
+                stroke-width: 2.62800002;
+            }
+            .lvl-3 {
+                fill: #00c9ff;
+                stroke: #000000;
+                stroke-width: 2.62800002;
+            }
+            .direct {
+                fill: #444444;
+                stroke:#000000;
+                stroke-width:2;
+                stroke-linejoin:round;
+            }
+
+            .ship {
+                fill: #00c45b;
+                stroke: #000000;
+                stroke-width: 2.62800002;
+            }
+
+            .del {
+                fill: #ff0000;
+            }
+            .sel {
+                fill: #ffff00;
+            }
+
+            .name {
+                display: inline-block;
+                width: 50pt;
+            }
+            .input {
+                width: 100pt;
+                text-align: right;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <label class="name">HP</label>
+            <input class="input" id="hp-input" type="text" onClick="this.select();" onkeyup="setupSlots(this)" value="1">
+            <label class="output" id="hp-output"/>
+        </div>
+        <div>
+            <label class="name">Engine</label>
+            <input class="input" id="engine-input" type="text" onClick="this.select();" onkeyup="setupEngine(this)" value="1">
+            <label class="output" id="engine-output"/>
+        </div>
+        <div>
+            <label class="name">Directions</label>
+            <input class="input" style="visibility: hidden"/>
+            <label class="output" id="direction-output" />
+        </div>
+        <div>
+            <label class="name">Slots</label>
+            <input class="input" style="visibility: hidden"/>
+            <label class="output" id="slot-output" />
+        </div>
+        <div>
+            <label class="name">Tech</label>
+            <select class="input" id="tech-input" onchange='setupTech(this)' value="none">
+                <option value="none">None</option>
+                <option value="radar">Radar</option>
+                <option value="planning">Planning</option>
+                <option value="targeting">Targeting</option>
+            </select>
+            <label class="output" id="tech-output" />
+        </div>
+        <div>
+            <label class="name">Total</label>
+            <input class="input" style="visibility: hidden"/>
+            <label class="output" id="total-output" />
+        </div>
+        <svg viewBox="0 0 286.67334 259.39105">
+            <g transform="translate(-501.43035,-62.03493)" id="layer1">
+                <path
+                   d="m 735.03295,269.90289 22.56651,-39.08633 8.56056,7.41363 -20.42637,35.37952 z"
+                   class="ext-armor" />
+                <path
+                   d="m 735.03304,113.55797 22.56651,39.08633 8.56056,-7.41363 -20.42637,-35.37952 z"
+                   class="ext-armor" />
+                <path
+                   d="m 554.50113,113.55756 -22.5665,39.08632 -8.56056,-7.41363 20.42637,-35.37951 z"
+                   class="ext-armor" />
+                <path
+                   d="m 554.50101,269.90293 -22.56649,-39.08632 -8.56056,7.41363 20.42637,35.37951 z"
+                   class="ext-armor" />
+                <path
+                   d="m 757.59942,152.64403 22.56678,39.08608 6.42021,-11.12013 -18.2863,-31.67277 z"
+                   class="ext-armor" />
+                <path
+                   d="m 757.59937,230.81643 22.56678,-39.08608 6.42021,11.12013 -18.2863,31.67277 z"
+                   class="ext-armor" />
+                <path
+                   d="m 531.93465,230.81645 -22.56677,-39.08608 -6.42021,11.12013 18.28629,31.67277 z"
+                   class="ext-armor" />
+                <path
+                   d="m 531.93461,152.6439 -22.56677,39.08608 -6.42021,-11.12013 18.2863,-31.67277 z"
+                   class="ext-armor" />
+                <path
+                   d="m 554.50128,113.55757 22.56615,-39.08643 -12.84042,0 -18.28627,31.67278 z"
+                   class="ext-armor" />
+                <path
+                   d="m 735.03291,113.55757 -22.56615,-39.086427 12.84042,0 18.28627,31.672777 z"
+                   class="ext-armor" />
+                <path
+                   d="m 735.0328,269.90287 -22.56615,39.08643 12.84042,0 18.28627,-31.67278 z"
+                   class="ext-armor" />
+                <path
+                   d="m 554.50101,269.90293 22.56615,39.08642 -12.84042,0 -18.28627,-31.67277 z"
+                   class="ext-armor" />
+                <path
+                   d="m 644.76728,308.98917 -6.42021,11.12013 -54.95319,-0.16247 -6.32633,-10.95753 z"
+                   class="ext-armor" />
+                <path
+                   d="m 712.4662,308.9896 -6.42021,11.12013 -54.95319,-0.16247 -6.32633,-10.95753 z"
+                   class="ext-armor" />
+                <path
+                   d="m 712.46705,74.471428 -6.42021,-11.120128 -54.95319,0.162473 -6.32633,10.95753 z"
+                   class="ext-armor" />
+                <path
+                   d="m 644.76737,74.471303 -6.42021,-11.120128 -54.95319,0.162473 -6.32633,10.95753 z"
+                   class="ext-armor" />
+
+                <path
+                   id="path4313"
+                   d="m 644.76754,74.47121 -1.4e-4,39.08656 45.13291,1.2e-4 22.56653,-39.08637 z"
+                   class="front lvl-1" />
+                <path
+                   id="path4313-0"
+                   d="m 644.76732,74.471303 1.4e-4,39.086557 -45.13291,1.2e-4 -22.56653,-39.086367 z"
+                   class="front lvl-1" />
+                <path
+                   id="path4313-0-6"
+                   d="m 644.76671,308.99015 -1.4e-4,-39.08656 45.13291,-1.2e-4 22.56653,39.08637 z"
+                   class="lvl-1" />
+                <path
+                   id="path4313-0-6-2"
+                   d="m 644.76643,308.99015 1.4e-4,-39.08656 -45.13291,-1.2e-4 -22.56653,39.08637 z"
+                   class="lvl-1" />
+                <path
+                   id="path4360"
+                   d="m 577.06806,74.471756 -22.56646,39.086254 30.08864,26.05752 15.04427,-26.05769 z"
+                   class="lvl-1" />
+                <path
+                   id="path4360-6"
+                   d="m 712.46692,74.471428 22.56646,39.086252 -30.08864,26.05752 -15.04427,-26.05769 z"
+                   class="lvl-1" />
+                <path
+                   id="path4360-6-1"
+                   d="M 712.46635,308.98913 735.0328,269.90287 704.94416,243.84535 689.8999,269.90304 Z"
+                   class="lvl-1" />
+                <path
+                   id="path4360-6-1-8"
+                   d="m 577.06745,308.98919 -22.56644,-39.08626 30.08864,-26.05752 15.04425,26.05769 z"
+                   class="lvl-1" />
+                <path
+                   id="path4360-6-1-8-7"
+                   d="m 780.166,191.73027 -22.56648,39.08624 -37.6108,-13.02877 15.0445,-26.05755 z"
+                   class="lvl-1" />
+                <path
+                   id="path4360-6-1-8-7-9"
+                   d="m 509.36802,191.73029 22.56648,39.08624 37.6108,-13.02877 -15.04449,-26.05755 z"
+                   class="lvl-1" />
+                <path
+                   id="path4360-6-1-8-7-9-2"
+                   d="m 509.36815,191.73012 22.56648,-39.08624 37.6108,13.02877 -15.04449,26.05755 z"
+                   class="lvl-1" />
+                <path
+                   id="path4360-6-1-8-7-9-2-0"
+                   d="m 780.16603,191.73054 -22.56648,-39.08624 -37.6108,13.02877 15.04449,26.05755 z"
+                   class="lvl-1" />
+                <path
+                   id="path4467"
+                   d="m 531.9345,230.81653 22.56651,39.0864 30.08864,-26.05752 -15.04435,-26.05765 z"
+                   class="lvl-1" />
+                <path
+                   id="path4467-2"
+                   d="m 531.93509,152.64441 22.56651,-39.0864 30.08864,26.05752 -15.04435,26.05765 z"
+                   class="lvl-1" />
+                <path
+                   id="path4467-3"
+                   d="m 757.59955,152.64433 -22.56651,-39.0864 -30.08864,26.05752 15.04435,26.05765 z"
+                   class="lvl-1" />
+                <path
+                   id="path4467-3-7"
+                   d="m 757.59952,230.81651 -22.56651,39.0864 -30.08864,-26.05752 15.04435,-26.05765 z"
+                   class="lvl-1" />
+
+                <path
+                   id="path4612-3-6"
+                   d="m 667.33411,152.64422 22.56619,-39.08631 -45.13288,-1.7e-4 -9e-5,39.08637 z"
+                   class="front lvl-2" />
+                <path
+                   id="path4612-3-6-1"
+                   d="m 622.20075,152.64432 -22.56619,-39.08631 45.13288,-1.7e-4 9e-5,39.08637 z"
+                   class="front lvl-2" />
+                <path
+                   id="path4505"
+                   d="m 667.33335,230.81644 22.56648,39.08645 15.04433,-26.05754 -30.08869,-26.05755 z"
+                   class="right-back lvl-2" />
+                <path
+                   id="path4505-5"
+                   d="m 622.20046,230.8165 -22.56648,39.08645 -15.04433,-26.05754 30.08869,-26.05755 z"
+                   class="left-back lvl-2" />
+                <path
+                   id="path4505-5-9"
+                   d="m 622.20103,152.64443 -22.56648,-39.08645 -15.04433,26.05754 30.08869,26.05755 z"
+                   class="left-front lvl-2" />
+                <path
+                   id="path4505-5-9-2"
+                   d="m 667.33396,152.64404 22.56648,-39.08645 15.04433,26.05754 -30.08869,26.05755 z"
+                   class="right-front lvl-2" />
+                <path
+                   id="path4505-5-9-2-2"
+                   d="m 599.63466,191.73065 -45.1331,8e-5 15.04433,-26.05755 37.61085,13.0288 z"
+                   class="left-front lvl-2" />
+                <path
+                   id="path4505-5-9-2-2-8"
+                   d="m 689.89998,191.73057 45.1331,8e-5 -15.04433,-26.05755 -37.61085,13.0288 z"
+                   class="right-front lvl-2" />
+                <path
+                   id="path4505-5-9-2-2-8-9"
+                   d="m 689.89998,191.73065 45.1331,-8e-5 -15.04433,26.05755 -37.61085,-13.0288 z"
+                   class="right-back lvl-2" />
+                <path
+                   id="path4505-5-9-2-2-8-9-7"
+                   d="m 599.63466,191.73073 -45.1331,-8e-5 15.04433,26.05755 37.61085,-13.0288 z"
+                   class="left-back lvl-2" />
+                <path
+                   id="path4612"
+                   d="m 622.20046,230.8165 -22.56619,39.08631 45.13288,1.7e-4 8e-5,-39.08637 z"
+                   class="back lvl-2" />
+                <path
+                   id="path4612-3"
+                   d="m 667.33335,230.81644 22.56619,39.08631 -45.13288,1.7e-4 -8e-5,-39.08637 z"
+                   class="back lvl-2" />
+                <path
+                   id="path4659"
+                   d="m 682.37781,204.7593 -7.52211,13.02881 30.08871,26.05758 15.04443,-26.05755 z"
+                   class="right-back lvl-2" />
+                <path
+                   id="path4659-2"
+                   d="m 607.15683,204.75938 7.52211,13.02881 -30.08871,26.05758 -15.04443,-26.05755 z"
+                   class="left-back lvl-2" />
+                <path
+                   id="path4659-2-9"
+                   d="m 607.15681,178.70189 7.52211,-13.02881 -30.08871,-26.05758 -15.04443,26.05755 z"
+                   class="left-front lvl-2" />
+                <path
+                   id="path4659-2-9-3"
+                   d="m 682.37818,178.7015 -7.52211,-13.02881 30.08871,-26.05758 15.04443,26.05755 z"
+                   class="right-front lvl-2" />
+
+                <path
+                   id="path4706"
+                   d="m 622.20105,152.64423 22.56645,39.08647 -45.13283,4e-5 z"
+                   class="left-front lvl-3" />
+                <path
+                   id="path4706-1"
+                   d="m 622.20105,230.81721 22.56645,-39.08647 -45.13283,-4e-5 z"
+                   class="left-back lvl-3" />
+                <path
+                   id="path4706-1-9"
+                   d="m 644.76749,191.7307 22.56645,-39.08647 -45.13283,-4e-5 z"
+                   class="front lvl-3" />
+                <path
+                   id="path4706-1-9-4"
+                   d="m 667.33353,230.81694 22.56645,-39.08647 -45.13283,-4e-5 z"
+                   class="right-back lvl-3" />
+                <path
+                   id="path4706-1-9-4-7"
+                   d="m 667.33411,152.64422 22.56645,39.08647 -45.13283,4e-5 z"
+                   class="right-front lvl-3" />
+                <path
+                   id="path4706-1-9-4-7-8"
+                   d="m 644.76747,191.73072 22.56645,39.08647 -45.13283,4e-5 z"
+                   class="back lvl-3" />
+            </g>
+            <g transform="translate(-501.43035,-62.03493)" id="layer2">
+                <path
+                   id="path6028-4"
+                   d="m 640.42818,212.45648 c -2.4565,-16.81097 -5.73373,-32.3376 4.33933,-41.11929 10.07304,8.78169 6.7958,24.30832 4.33932,41.11929 z"
+                   class="ship" />
+            </g>
+            <g id="layer3">
+              <path
+                 id="path4706-3"
+                 d="m 143.33714,155.59844 5.34367,9.25556 -10.68732,10e-6 z"
+                 class="a1 back lvl-3 direct" />
+              <path
+                 id="path4706-3-6"
+                 d="m 148.6808,164.85401 5.34367,-9.25557 -10.68732,-1e-5 z"
+                 class="a1 back lvl-3 direct" />
+              <path
+                 id="path4706-3-6-7"
+                 d="m 137.99348,164.85401 5.34367,-9.25557 -10.68732,-1e-5 z"
+                 class="a1 back lvl-3 direct" />
+              <path
+                 id="path4706-3-3"
+                 d="m 143.33715,104.02444 5.34367,-9.25556 -10.68732,-10e-6 z"
+                 class="a2 front lvl-3 direct" />
+              <path
+                 id="path4706-3-6-5"
+                 d="m 148.68081,94.76887 5.34367,9.25557 -10.68732,1e-5 z"
+                 class="a2 front lvl-3 direct" />
+              <path
+                 id="path4706-3-6-7-6"
+                 d="m 137.99349,94.76887 5.34367,9.25557 -10.68732,1e-5 z"
+                 class="a2 front lvl-3 direct" />
+              <path
+                 id="path4706-3-3-9"
+                 d="m 165.30279,117.00283 10.68739,-3e-5 -5.34365,-9.25549 z"
+                 class="a3 right-front lvl-3 direct" />
+              <path
+                 id="path4706-3-6-5-1"
+                 d="m 175.99018,117.00279 -5.34372,9.25554 -5.34367,-9.25549 z"
+                 class="a3 right-front lvl-3 direct" />
+              <path
+                 id="path4706-3-6-7-6-2"
+                 d="m 170.64652,107.7473 -5.34372,9.25554 -5.34367,-9.25549 z"
+                 class="a3 right-front lvl-3 direct" />
+              <path
+                 id="path4706-3-3-9-0"
+                 d="m 165.63007,142.0605 10.68738,3e-5 -5.34365,9.25549 z"
+                 class="a4 right-back lvl-3 direct" />
+              <path
+                 id="path4706-3-6-5-1-9"
+                 d="m 176.31745,142.06054 -5.34372,-9.25554 -5.34367,9.25549 z"
+                 class="a4 right-back lvl-3 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-3"
+                 d="m 170.97379,151.31603 -5.34372,-9.25554 -5.34367,9.25549 z"
+                 class="a4 right-back lvl-3 direct" />
+              <path
+                 id="path4706-3-3-9-0-0"
+                 d="m 120.96407,142.0605 -10.68738,3e-5 5.34365,9.25549 z"
+                 class="a5 left-back lvl-3 direct" />
+              <path
+                 id="path4706-3-6-5-1-9-6"
+                 d="m 110.27669,142.06054 5.34372,-9.25554 5.34367,9.25549 z"
+                 class="a5 left-back lvl-3 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-3-2"
+                 d="m 115.62035,151.31603 5.34372,-9.25554 5.34367,9.25549 z"
+                 class="a5 left-back lvl-3 direct" />
+              <path
+                 id="path4706-3-3-9-0-0-1"
+                 d="m 120.96407,117.05578 -10.68738,-3e-5 5.34365,-9.25549 z"
+                 class="a6 left-front lvl-3 direct" />
+              <path
+                 id="path4706-3-6-5-1-9-6-8"
+                 d="m 110.27669,117.05574 5.34372,9.25554 5.34367,-9.25549 z"
+                 class="a6 left-front lvl-3 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-3-2-7"
+                 d="m 115.62035,107.80025 5.34372,9.25554 5.34367,-9.25549 z"
+                 class="a6 left-front lvl-3 direct" />
+
+              <path
+                 id="path4706-3-3-9-0-0-1-2"
+                 d="m 87.028915,97.27171 -10.687385,-2.6e-5 5.343651,-9.255496 z"
+                 class="a7 left-front lvl-2 direct" />
+              <path
+                 id="path4706-3-6-5-1-9-6-8-0"
+                 d="m 76.341526,97.27167 5.343724,9.25554 5.343669,-9.255487 z"
+                 class="a7 left-front lvl-2 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-3-2-7-2"
+                 d="m 81.685186,88.01618 5.343724,9.255538 5.343669,-9.255485 z"
+                 class="a7 left-front lvl-2 direct" />
+              <path
+                 id="path4706-3-3-7"
+                 d="m 124.88689,66.31559 5.34367,-9.25556 -10.68732,-10e-6 z"
+                 class="a8 front lvl-2 direct" />
+              <path
+                 id="path4706-3-6-5-5"
+                 d="m 130.23055,57.06002 5.34367,9.25557 -10.68732,1e-5 z"
+                 class="a8 front lvl-2 direct" />
+              <path
+                 id="path4706-3-6-7-6-9"
+                 d="m 119.54323,57.06002 5.34367,9.25557 -10.68732,1e-5 z"
+                 class="a8 front lvl-2 direct" />
+              <path
+                 id="path4706-3-2"
+                 d="m 162.94373,194.03719 5.34367,9.25556 -10.68732,10e-6 z"
+                 class="a9 back lvl-2 direct" />
+              <path
+                 id="path4706-3-6-8"
+                 d="m 168.28739,203.29276 5.34367,-9.25557 -10.68732,-1e-5 z"
+                 class="a9 back lvl-2 direct" />
+              <path
+                 id="path4706-3-6-7-9"
+                 d="m 157.60007,203.29276 5.34367,-9.25557 -10.68732,-1e-5 z"
+                 class="a9 back lvl-2 direct" />
+              <path
+                 id="path4706-3-3-9-0-0-3"
+                 d="m 87.166295,162.11934 -10.687385,3e-5 5.343651,9.25549 z"
+                 class="a10 left-back lvl-2 direct" />
+              <path
+                 id="path4706-3-6-5-1-9-6-6"
+                 d="m 76.478906,162.11938 5.343724,-9.25554 5.343669,9.25549 z"
+                 class="a10 left-back lvl-2 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-3-2-1"
+                 d="m 81.822566,171.37487 5.343724,-9.25554 5.343669,9.25549 z"
+                 class="a10 left-back lvl-2 direct" />
+              <path
+                 id="path4706-3-3-9-0-9"
+                 d="m 198.87828,162.11934 10.68739,3e-5 -5.34365,9.25549 z"
+                 class="a11 right-back lvl-2 direct" />
+              <path
+                 id="path4706-3-6-5-1-9-3"
+                 d="m 209.56567,162.11938 -5.34372,-9.25554 -5.34367,9.25549 z"
+                 class="a11 right-back lvl-2 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-3-1"
+                 d="m 204.22201,171.37487 -5.34372,-9.25554 -5.34367,9.25549 z"
+                 class="a11 right-back lvl-2 direct" />
+              <path
+                 id="path4706-3-3-9-4"
+                 d="m 198.74089,96.859542 10.68739,-2.6e-5 -5.34365,-9.255496 z"
+                 class="a12 right-front lvl-2 direct" />
+              <path
+                 id="path4706-3-6-5-1-7"
+                 d="m 209.42828,96.859502 -5.34372,9.255538 -5.34367,-9.255485 z"
+                 class="a12 right-front lvl-2 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8"
+                 d="m 204.08462,87.604012 -5.34372,9.255538 -5.34367,-9.255485 z"
+                 class="a12 right-front lvl-2 direct" />
+
+              <path
+                 id="path4706-3-3-9-4-5"
+                 d="m 211.93027,42.453368 10.68738,-2.6e-5 -5.34365,-9.255496 z"
+                 class="a13 right-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0"
+                 d="m 222.61766,42.453328 -5.34373,9.255539 -5.34366,-9.255486 z"
+                 class="a13 right-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3"
+                 d="m 217.274,33.197837 -5.34373,9.255539 -5.34366,-9.255485 z"
+                 class="a13 right-front lvl-1 direct" />
+              <path
+                 id="path4706-3-3-9-4-5-1"
+                 d="m 232.95084,77.625036 10.68738,-2.6e-5 -5.34365,-9.255496 z"
+                 class="a14 right-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0-0"
+                 d="m 243.63823,77.624996 -5.34373,9.255539 -5.34367,-9.255486 z"
+                 class="a14 right-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3-6"
+                 d="m 238.29457,68.369506 -5.34373,9.255538 -5.34367,-9.255485 z"
+                 class="a14 right-front lvl-1 direct" />
+              <path
+                 id="path4706-3-3-9-4-5-1-2"
+                 d="m 254.24618,114.85754 10.68739,-2e-5 -5.34365,-9.2555 z"
+                 class="a15 right-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0-0-0"
+                 d="m 264.93357,114.8575 -5.34372,9.25554 -5.34367,-9.25548 z"
+                 class="a15 right-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3-6-6"
+                 d="m 259.58991,105.60201 -5.34372,9.25554 -5.34367,-9.25548 z"
+                 class="a15 right-front lvl-1 direct" />
+              <path
+                 id="path4706-3-3-9-4-5-5"
+                 d="m 75.037225,42.622358 -10.687385,-2.6e-5 5.343651,-9.255496 z"
+                 class="a16 left-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0-5"
+                 d="m 64.349836,42.622318 5.343724,9.255539 5.343669,-9.255486 z"
+                 class="a16 left-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3-4"
+                 d="m 69.693496,33.366828 5.343724,9.255538 5.343669,-9.255485 z"
+                 class="a16 left-front lvl-1 direct" />
+              <path
+                 id="path4706-3-3-9-4-5-1-6"
+                 d="m 54.016665,77.794027 -10.687385,-2.6e-5 5.343651,-9.255496 z"
+                 class="a17 left-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0-0-5"
+                 d="M 43.329276,77.793987 48.673,87.049526 54.016669,77.79404 Z"
+                 class="a17 left-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3-6-69"
+                 d="m 48.672936,68.538497 5.343724,9.255538 5.343669,-9.255485 z"
+                 class="a17 left-front lvl-1 direct" />
+              <path
+                 id="path4706-3-3-9-4-5-1-2-7"
+                 d="m 32.721315,115.02653 -10.687385,-2e-5 5.343651,-9.2555 z"
+                 class="a18 left-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0-0-0-4"
+                 d="m 22.033926,115.0265 5.343724,9.25553 5.343669,-9.25548 z"
+                 class="a18 left-front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3-6-6-5"
+                 d="m 27.377586,105.771 5.343724,9.25554 5.343669,-9.25548 z"
+                 class="a18 left-front lvl-1 direct" />
+              <path
+                 id="path4706-3-3-9-4-5-5-5"
+                 d="m 74.938655,217.28115 -10.687385,3e-5 5.343651,9.25549 z"
+                 class="a19 left-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0-5-4"
+                 d="m 64.251266,217.28119 5.343724,-9.25554 5.343669,9.25549 z"
+                 class="a19 left-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3-4-7"
+                 d="m 69.594926,226.53668 5.343724,-9.25554 5.343669,9.25549 z"
+                 class="a19 left-back lvl-1 direct" />
+              <path
+                 id="path4706-3-3-9-4-5-1-6-4"
+                 d="m 53.918095,182.10949 -10.687385,3e-5 5.343651,9.25549 z"
+                 class="a20 left-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0-0-5-3"
+                 d="m 43.230706,182.10953 5.343724,-9.25554 5.343669,9.25549 z"
+                 class="a20 left-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3-6-69-0"
+                 d="m 48.574366,191.36502 5.343724,-9.25554 5.343669,9.25549 z"
+                 class="a20 left-back lvl-1 direct" />
+              <path
+                 id="path4706-3-3-9-4-5-1-2-7-8"
+                 d="m 32.622745,144.87699 -10.687385,3e-5 5.343651,9.25549 z"
+                 class="a21 left-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0-0-0-4-6"
+                 d="m 21.935356,144.87703 5.343724,-9.25554 5.343669,9.25549 z"
+                 class="a21 left-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3-6-6-5-8"
+                 d="m 27.279016,154.13252 5.343724,-9.25554 5.343669,9.25549 z"
+                 class="a21 left-back lvl-1 direct" />
+              <path
+                 id="path4706-3-3-9-4-5-5-5-4"
+                 d="m 211.38071,217.00637 10.68738,3e-5 -5.34365,9.25549 z"
+                 class="a22 right-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0-5-4-3"
+                 d="m 222.0681,217.00641 -5.34373,-9.25554 -5.34367,9.25549 z"
+                 class="a22 right-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3-4-7-1"
+                 d="m 216.72444,226.2619 -5.34373,-9.25554 -5.34367,9.25549 z"
+                 class="a22 right-back lvl-1 direct" />
+              <path
+                 id="path4706-3-3-9-4-5-1-6-4-9"
+                 d="m 232.40127,181.83471 10.68738,3e-5 -5.34365,9.25549 z"
+                 class="a23 right-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0-0-5-3-2"
+                 d="m 243.08866,181.83475 -5.34373,-9.25554 -5.34367,9.25549 z"
+                 class="a23 right-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3-6-69-0-0"
+                 d="m 237.745,191.09024 -5.34373,-9.25554 -5.34367,9.25549 z"
+                 class="a23 right-back lvl-1 direct" />
+              <path
+                 id="path4706-3-3-9-4-5-1-2-7-8-8"
+                 d="m 253.69662,144.60221 10.68738,3e-5 -5.34365,9.25549 z"
+                 class="a24 right-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-5-1-7-0-0-0-4-6-9"
+                 d="m 264.38401,144.60225 -5.34373,-9.25554 -5.34367,9.25549 z"
+                 class="a24 right-back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-6-2-8-3-6-6-5-8-2"
+                 d="m 259.04035,153.85774 -5.34373,-9.25554 -5.34367,9.25549 z"
+                 class="a24 right-back lvl-1 direct" />
+              <path
+                 id="path4706-3-2-6"
+                 d="m 173.11054,233.05576 5.34367,9.25556 -10.68732,1e-5 z"
+                 class="a25 back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-8-4"
+                 d="m 178.4542,242.31133 5.34367,-9.25557 -10.68732,-1e-5 z"
+                 class="a25 back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-9-9"
+                 d="m 167.76688,242.31133 5.34367,-9.25557 -10.68732,-1e-5 z"
+                 class="a25 back lvl-1 direct" />
+              <path
+                 id="path4706-3-2-6-0"
+                 d="m 113.48358,233.05576 5.34367,9.25556 -10.68732,1e-5 z"
+                 class="a26 back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-8-4-4"
+                 d="m 118.82724,242.31133 5.34367,-9.25557 -10.68732,-1e-5 z"
+                 class="a26 back lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-9-9-8"
+                 d="m 108.13992,242.31133 5.34367,-9.25557 -10.68732,-1e-5 z"
+                 class="a26 back lvl-1 direct" />
+              <path
+                 id="path4706-3-2-6-1"
+                 d="m 113.34621,26.61007 -5.34367,-9.25556 10.68732,-10e-6 z"
+                 class="a27 front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-8-4-7"
+                 d="m 108.00255,17.3545 -5.34367,9.25557 10.68732,10e-6 z"
+                 class="a27 front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-9-9-2"
+                 d="m 118.68987,17.3545 -5.34367,9.25557 10.68732,10e-6 z"
+                 class="a27 front lvl-1 direct" />
+              <path
+                 id="path4706-3-2-6-0-2"
+                 d="m 172.97318,26.61007 -5.34367,-9.25556 10.68732,-10e-6 z"
+                 class="a28 front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-8-4-4-2"
+                 d="m 167.62952,17.3545 -5.34367,9.25557 10.68732,10e-6 z"
+                 class="a28 front lvl-1 direct" />
+              <path
+                 id="path4706-3-6-7-9-9-8-6"
+                 d="m 178.31684,17.3545 -5.34367,9.25557 10.68732,10e-6 z"
+                 class="a28 front lvl-1 direct" />
+            </g>
+        </svg>
+
+        <script>
+            var lvl1, lvl2, lvl3;
+            var hpOut, enOut, diOut, slOut, thOut, ttOut;
+            var directs = {};
+            var slots = {};
+            window.onload = function() {
+                var anchors = document.getElementById('layer1').childNodes;
+                for(var i = 0; i < anchors.length; i++) {
+                    var anchor = anchors[i];
+                    anchor.onclick = function(el) {
+                        var t = el.target;
+                        if (t.classList.contains('del'))
+                            t.classList.remove('del');
+                        else
+                            t.classList.add('del');
+                    }
+                }
+                var directs = document.getElementById('layer3').childNodes;
+                for(var i = 0; i < directs.length; i++) {
+                    var direct = directs[i];
+                    direct.onclick = function(el) {
+                        var t = el.target;
+                        if (t.classList.contains('sel')) {
+                            t.classList.remove('sel');
+                            setupDirect(t, -1);
+                        }
+                        else {
+                            t.classList.add('sel');
+                            setupDirect(t, +1);
+                        }
+                    }
+                }
+                lvl1 = document.getElementsByClassName('lvl-1')
+                lvl2 = document.getElementsByClassName('lvl-2')
+                lvl3 = document.getElementsByClassName('lvl-3')
+                hpOut = document.getElementById('hp-output');
+                enOut = document.getElementById('engine-output');
+                diOut = document.getElementById('direction-output');
+                slOut = document.getElementById('slot-output');
+                thOut = document.getElementById('tech-output');
+                ttOut = document.getElementById('total-output');
+
+                slotCosts["back"] = slotCosts["front"];
+                slotCosts["left-back"]   = slotCosts["left-front"];
+                slotCosts["right-back"]  = slotCosts["left-front"];
+                slotCosts["right-front"] = slotCosts["left-front"];
+
+                var lvls = ["lvl-1", "lvl-2", "lvl-3"];
+                var sides = ["front", "back", "left-front", "left-back", "right-front", "right-back"];
+                for (var lvl in lvls) {
+                    slots[lvls[lvl]] = {}
+                    for (var side in sides)
+                        slots[lvls[lvl]][sides[side]] = 0;
+                }
+
+                eng = getInt(document.getElementById('engine-input').value, 1, 3);
+                tech = document.getElementById('tech-input').value;
+                setupSlots(document.getElementById('hp-input'));
+            }
+
+            function getInt(i, min = 0, max = 100) {
+                var value = parseInt(i);
+                if (isNaN(value))
+                    return min;
+                if (value < min)
+                    return min;
+                if (value > max)
+                    return max;
+                return value;
+            }
+            var lvlHidden = [false, false]
+            function hideElements(arr, id, hide) {
+                if (lvlHidden[id] == hide)
+                    return;
+                lvlHidden[id] = hide;
+                for (var i = 0; i < arr.length; ++i) {
+                    if (hide) {
+                        arr[i].style.visibility = "hidden"
+                        if (arr[i].classList.contains('sel')) {
+                            setupDirect(arr[i], -1);
+                        }
+                    }
+                    else {
+                        arr[i].style.visibility = "visible"
+                        if (arr[i].classList.contains('sel')) {
+                            setupDirect(arr[i], +1);
+                        }
+                    }
+                }
+            }
+
+            var hp = 1, shipSize = 1, eng = 1;
+            var hpRanges = [1, 6, 9];
+            function setupSlots(el) {
+                hp = getInt(el.value, 1, 10);
+                shipSize = (hp >= hpRanges[0]) +
+                           (hp >= hpRanges[1]) +
+                           (hp >= hpRanges[2]);
+                hideElements(lvl2, 0, hp < hpRanges[1]);
+                hideElements(lvl3, 1, hp < hpRanges[2]);
+                computePoints();
+            }
+
+            function setupEngine(el) {
+                eng = getInt(el.value, 1, 3);
+                computePoints();
+            }
+
+            var tech = "none";
+            function setupTech(el) {
+                tech = el.value;
+                computePoints();
+            }
+
+            function setupDirect(el, act) {
+                var group = el.classList[0];
+                if (!(group in directs))
+                    directs[group] = 0;
+                directs[group] += act;
+
+                var side = el.classList[1];
+                var lvl = el.classList[2];
+                slots[lvl][side] += (directs[group] === 1 && act > 0);
+                slots[lvl][side] -= (directs[group] === 0);
+
+                console.log(slots[lvl][side])
+
+                computePoints();
+            }
+
+            var slotCosts = {
+                "front" : {
+                    "lvl-1" : [10, 30, 70],
+                    "lvl-2" : [40, 80],
+                    "lvl-3" : [60]
+                },
+                "left-front" : {
+                    "lvl-1" : [10, 25, 40, 70],
+                    "lvl-2" : [40, 90],
+                    "lvl-3" : [60, 100]
+                }
+            }
+            var hpCosts = [30, 60, 90, 120, 150, 200, 250, 300];
+            var directCosts = [5, 15, 25];
+            var engineCosts = [[100, 120, 150],
+                              [120, 150, 200],
+                              [150, 200, 300]];
+            var techCosts = {
+                "none" : 0,
+                "radar" : 120,
+                "planning" : 200,
+                "targeting" : 180
+            }
+            function computePoints() {
+                var diff = hp - hpCosts.length;
+                var total = 0, tmp;
+                if (diff > 0)
+                    tmp = hpCosts[hpCosts.length - 1] + 100 * diff;
+                else
+                    tmp = hpCosts[hp - 1];
+                hpOut.innerHTML = tmp;
+                total += tmp;
+                // Engine
+                tmp = engineCosts[eng-1][shipSize-1];
+                enOut.innerHTML = tmp;
+                total += tmp;
+                // Directs
+                tmp = 0;
+                for (var k in directs) {
+                    tmp += directs[k] ? directCosts[directs[k] - 1] : 0;
+                }
+                diOut.innerHTML = tmp;
+                total += tmp;
+                // Slots
+                tmp = 0;
+                for (var i = 1; i <= shipSize; ++i) {
+                    var lvl = "lvl-" + i;
+                    for (var side in slots[lvl]) {
+                        tmp += slotCosts[side][lvl][slots[lvl][side]];
+                    }
+                }
+                slOut.innerHTML = tmp;
+                total += tmp;
+                // Tech
+                tmp = techCosts[tech];
+                thOut.innerHTML = tmp;
+                total += tmp;
+
+                ttOut.innerHTML = total;
+            }
+        </script>
+    </body>
+</html>
