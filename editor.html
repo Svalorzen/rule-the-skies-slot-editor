@@ -5,6 +5,7 @@
     <style>
             html, body { margin:0; padding:0; overflow:hidden }
             svg { float:right; top:0; left:0; height:100%; width:50% }
+            .ui { float:left; top:0; left:0; height:100%; width:50% }
             .ext-armor {
                 fill: #9a36ff;
                 stroke: #000000;
@@ -47,12 +48,13 @@
             }
 
             .name {
+                vertical-align: top;
                 display: inline-block;
-                width: 70pt;
+                width: 100pt;
             }
             .input {
                 width: 100pt;
-                text-align: right;
+                text-align: center;
             }
             .export {
                 width: 150pt;
@@ -60,52 +62,75 @@
         </style>
     </head>
     <body>
-        <div>
-            <label class="name">Ship Color</label>
-            <input class="input" id="color-input" type="color" onchange='setupColor(this)' value="#00c45b" />
-        </div>
-        <div>
-            <label class="name">HP</label>
-            <input class="input" id="hp-input" type="text" onClick="this.select();" oninput="setupSlots(this)" value="1">
-            <label class="output" id="hp-output"/>
-        </div>
-        <div>
-            <label class="name">Engine</label>
-            <input class="input" id="engine-input" type="text" onClick="this.select();" oninput="setupEngine(this)" value="1">
-            <label class="output" id="engine-output"/>
-        </div>
-        <div>
-            <label class="name">Directions</label>
-            <input class="input" style="visibility: hidden"/>
-            <label class="output" id="direction-output" />
-        </div>
-        <div>
-            <label class="name">Slots</label>
-            <input class="input" style="visibility: hidden"/>
-            <label class="output" id="slot-output" />
-        </div>
-        <div>
-            <label class="name">Tech</label>
-            <select class="input" id="tech-input" onchange='setupTech(this)' value="none">
-                <option value="none">None</option>
-                <option value="radar">Radar</option>
-                <option value="planning">Planning</option>
-                <option value="targeting">Targeting</option>
-            </select>
-            <label class="output" id="tech-output" />
-        </div>
-        <div>
-            <label class="name">Total</label>
-            <input class="input" style="visibility: hidden"/>
-            <label class="output" id="total-output" />
-        </div>
-        <div>
-            <label class="name">Export</label>
-            <textarea class="export" type="text" id="export-output" rows="10" readonly></textarea>
-        </div>
-        <div>
-            <label class="name">Import</label>
-            <input class="input" id="import-input" type="text" oninput="importString(this)" onpaste="importString(this)"/>
+        <div class="ui">
+            <div>
+                <label class="name">Ship Color</label>
+                <input class="input" id="color-input" type="color" onchange='setupColor(this)' value="#00c45b" />
+            </div>
+            <div>
+                <label class="name">HP</label>
+                <input class="input" id="hp-input" type="text" onClick="this.select();" oninput="setupSlots(this)" value="1">
+                <label class="output" id="hp-output"/>
+            </div>
+            <div>
+                <label class="name">Engine</label>
+                <input class="input" id="engine-input" type="text" onClick="this.select();" oninput="setupEngine(this)" value="1">
+                <label class="output" id="engine-output"/>
+            </div>
+            <div>
+                <label class="name">Directions</label>
+                <input class="input" style="visibility: hidden"/>
+                <label class="output" id="direction-output" />
+            </div>
+            <div>
+                <label class="name">Slots</label>
+                <input class="input" style="visibility: hidden"/>
+                <label class="output" id="slot-output" />
+            </div>
+            <div>
+                <div>
+                    <label class="name">Total Turrets</label>
+                    <input class="input" id="tot-turret-output" type="text" value="0" readonly />
+                </div>
+                <div>
+                    <label class="name">Long Turrets</label>
+                    <input class="input" id="long-turret-input"   type="number" onClick="this.select();" oninput="setupTurrets(this, 'long')" value="0">
+                    <label class="output" id="long-turret-output" />
+                </div>
+                <div>
+                    <label class="name">Medium Turrets</label>
+                    <input class="input" id="medium-turret-input" type="number" onClick="this.select();" oninput="setupTurrets(this, 'medium')" value="0">
+                    <label class="output" id="medium-turret-output" />
+                </div>
+                <div>
+                    <label class="name">Short Turrets</label>
+                    <input class="input" id="short-turret-input"  type="number" onClick="this.select();" oninput="setupTurrets(this, 'short')" value="0">
+                    <label class="output" id="short-turret-output" />
+                </div>
+            </div>
+            <div>
+                <label class="name">Tech</label>
+                <select class="input" id="tech-input" onchange='setupTech(this)' value="none">
+                    <option value="none">None</option>
+                    <option value="radar">Radar</option>
+                    <option value="planning">Planning</option>
+                    <option value="targeting">Targeting</option>
+                </select>
+                <label class="output" id="tech-output" />
+            </div>
+            <div>
+                <label class="name">Total</label>
+                <input class="input" style="visibility: hidden"/>
+                <label class="output" id="total-output" />
+            </div>
+            <div>
+                <label class="name">Export</label>
+                <textarea class="export" type="text" id="export-output" rows="10" readonly></textarea>
+            </div>
+            <div>
+                <label class="name">Import</label>
+                <input class="input" id="import-input" type="text" oninput="importString(this)" onpaste="importString(this)"/>
+            </div>
         </div>
         <svg viewBox="0 0 286.67334 259.39105">
             <g transform="translate(-501.43035,-62.03493)" id="layer1">
@@ -664,7 +689,9 @@
         <script>
             var lvl1, lvl2, lvl3;
             var clIn, hpIn,  enIn,  thIn;
+            var turrIn = [];
             var hpOut, enOut, diOut, slOut, thOut, ttOut;
+            var turrOut = [];
             var svgDirs = [];
             var directs = {};
             var slots = {};
@@ -704,6 +731,11 @@
                 hpIn = document.getElementById('hp-input');
                 enIn = document.getElementById('engine-input');
                 thIn = document.getElementById('tech-input');
+                turrIn = [
+                    document.getElementById('long-turret-input'),
+                    document.getElementById('medium-turret-input'),
+                    document.getElementById('short-turret-input')
+                ];
 
                 hpOut = document.getElementById('hp-output');
                 enOut = document.getElementById('engine-output');
@@ -711,6 +743,11 @@
                 slOut = document.getElementById('slot-output');
                 thOut = document.getElementById('tech-output');
                 ttOut = document.getElementById('total-output');
+                turrOut = [
+                    document.getElementById('long-turret-output'),
+                    document.getElementById('medium-turret-output'),
+                    document.getElementById('short-turret-output')
+                ];
 
                 slotCosts["back"] = slotCosts["front"];
                 slotCosts["left-back"]   = slotCosts["left-front"];
@@ -727,6 +764,7 @@
 
                 eng = getInt(document.getElementById('engine-input').value, 1, 3);
                 tech = document.getElementById('tech-input').value;
+                setupTurretsTot(0);
                 setupSlots(document.getElementById('hp-input'));
             }
 
@@ -797,8 +835,60 @@
 
                 var side = el.classList[1];
                 var lvl = el.classList[2];
-                slots[lvl][side] += (directs[group] === 1 && act > 0);
-                slots[lvl][side] -= (directs[group] === 0);
+
+                var slotDiff = (directs[group] === 1 && act > 0) - (directs[group] === 0);
+                slots[lvl][side] += slotDiff;
+
+                if (lvl === "lvl-1") {
+                    setupTurretsTot(slotDiff);
+                }
+
+                computePoints();
+            }
+
+            var gunTurretsTot = 0;
+            function setupTurretsTot(diff) {
+                gunTurretsTot += diff;
+                document.getElementById('tot-turret-output').value = gunTurretsTot;
+
+                if (diff < 0) {
+                    var tot = 0;
+                    for (var i = 0; i < gunTurrets.length; ++i)
+                        tot += gunTurrets[i];
+                    if (tot > gunTurretsTot) {
+                        diff = gunTurretsTot - tot;
+                        for (var i = 0; i < gunTurrets.length; ++i) {
+                            gunTurrets[i] += diff;
+                            diff = gunTurrets[i];
+
+                            gunTurrets[i] = Math.max(0, gunTurrets[i]);
+                            turrIn[i].value = gunTurrets[i];
+                            if (diff >= 0)
+                                break;
+                        }
+                        computePoints();
+                    }
+                }
+            }
+
+            var ranges = ["long", "medium", "short"];
+            var gunTurrets = [0, 0, 0];
+            function setupTurrets(el, range) {
+                if (el.value < 0) {
+                    el.value = 0;
+                    return;
+                }
+                var value = getInt(el.value, 0, gunTurretsTot);
+                var id = ranges.indexOf(range);
+                var tot = 0;
+                for (var i = 0; i < gunTurrets.length; ++i)
+                    tot += gunTurrets[i];
+                if (tot >= gunTurretsTot && value >= gunTurrets[id]) {
+                    el.value = gunTurrets[id];
+                    return;
+                }
+                gunTurrets[id] = value;
+                el.value = value;
 
                 computePoints();
             }
@@ -856,6 +946,21 @@
                 }
                 slOut.innerHTML = tmp;
                 total += tmp;
+                // Turrets;
+                var id = ranges.indexOf('long');
+                tmp = gunTurrets[id] * 30;
+                turrOut[id].innerHTML = tmp;
+                total += tmp;
+
+                id = ranges.indexOf('medium');
+                tmp = gunTurrets[id] * 25;
+                turrOut[id].innerHTML = tmp;
+                total += tmp;
+
+                id = ranges.indexOf('short');
+                tmp = gunTurrets[id] * 10;
+                turrOut[id].innerHTML = tmp;
+                total += tmp;
                 // Tech
                 tmp = techCosts[tech];
                 thOut.innerHTML = tmp;
@@ -873,6 +978,8 @@
                 exStr += hpIn.value + ";";
                 exStr += enIn.value + ";";
                 exStr += thIn.value + ";";
+                for (var i = 0; i < gunTurrets.length; ++i)
+                    exStr += gunTurrets[i] + ";";
                 for (var i = 0; i < svgDirs.length; ++i) {
                     if (svgDirs[i].classList.contains('sel') &&
                         svgDirs[i].style.visibility != "hidden")
@@ -897,9 +1004,16 @@
                 setupEngine(enIn);
                 setupTech(thIn);
 
-                for (var i = 4; i < arr.length; ++i) {
+                for (var i = 4 + gunTurrets.length; i < arr.length; ++i) {
+                    if (!arr[i])
+                        continue;
                     var el = document.getElementById(arr[i]);
                     el.onclick({target: el});
+                }
+
+                for (var i = 0; i < gunTurrets.length; ++i) {
+                    turrIn[i].value = arr[i + 4];
+                    setupTurrets(turrIn[i], ranges[i]);
                 }
             }
         </script>
