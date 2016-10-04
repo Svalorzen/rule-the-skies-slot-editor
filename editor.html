@@ -39,6 +39,12 @@
                 stroke-width:2;
                 stroke-linejoin:round;
             }
+            .weapon-text {
+                pointer-events: none;
+                font-family: "Verdana";
+                font-size: 7.5pt;
+                fill: #ffffff;
+            }
 
             .ship {
                 fill: #00c45b;
@@ -51,6 +57,10 @@
             }
             .sel {
                 fill: #ffff00;
+            }
+            .armed {
+                fill: #007700;
+                stroke: #005500;
             }
 
             .name {
@@ -695,50 +705,62 @@
                  class="a1 weapon back lvl-3"
                  d="m 154.02446,155.59844 -5.34365,-9.25558 -10.68732,0 -5.34367,9.25558 z"
                  id="path4462-3-9" />
+              <text id="texta1" x="139.7" y="154" class="weapon-text"></text>
               <path
                  class="a2 weapon front lvl-3"
                  d="m 132.64983,104.02444 5.34365,9.25558 10.68732,0 5.34367,-9.25558 z"
                  id="path4462-3-1-0-6" />
+              <text id="texta2" x="139.7" y="112" class="weapon-text"></text>
               <path
                  class="a3 weapon right-front lvl-3"
                  d="m 159.95913,107.74734 -5.34374,9.25553 5.34366,9.25548 10.6874,-3e-5 z"
                  id="path4462-3-1-0-0-6" />
+              <text id="texta3" x="158" y="123" class="weapon-text"></text>
               <path
                  class="a4 weapon right-back lvl-3"
                  d="m 170.97374,132.80501 -10.6874,-5e-5 -5.34366,9.25549 5.34373,9.25554 z"
-                 id="path4462-3-2" />
+                 id="path4462-3-2" text="aaa" />
+              <text id="texta4" x="158" y="143" class="weapon-text"></text>
               <path
                  class="a5 weapon left-back lvl-3"
                  d="m 126.30773,151.31599 5.34374,-9.25552 -5.34366,-9.25549 -10.6874,3e-5 z"
                  id="path4462-3-1-0-0-7-0" />
+              <text id="texta5" x="121" y="143" class="weapon-text"></text>
               <path
                  class="a6 weapon left-front lvl-3"
                  d="m 115.62042,126.31128 10.68739,6e-5 5.34366,-9.2555 -5.34373,-9.25554 z"
                  id="path4462-3-1-0-0-7-5-28" />
+              <text id="texta6" x="121" y="123" class="weapon-text"></text>
               <path
                  class="a7 weapon left-front lvl-2"
                  d="m 81.68526,106.52721 10.687386,6e-5 5.343659,-9.255491 -5.343726,-9.255546 z"
                  id="path4462-3-1-0-0-7-5-9" />
+              <text id="texta7" x="87" y="103" class="weapon-text"></text>
               <path
                  class="a8 weapon front lvl-2"
                  d="m 114.19957,66.31559 5.34365,9.25558 10.68732,0 5.34367,-9.25558 z"
                  id="path4462-3-1-0" />
+              <text id="texta8" x="121.2" y="74.5" class="weapon-text"></text>
               <path
                  class="a9 weapon back lvl-2"
                  d="m 173.63105,194.03719 -5.34365,-9.25558 -10.68732,0 -5.34367,9.25558 z"
                  id="path4462-3-1" />
+              <text id="texta9" x="159.6" y="193" class="weapon-text"></text>
               <path
                  class="a10 weapon left-back lvl-2"
                  d="m 92.509956,171.37483 5.343739,-9.25552 -5.34366,-9.25549 -10.6874,3e-5 z"
                  id="path4462-3-1-0-0-7-2" />
+              <text id="texta10" x="87" y="163" class="weapon-text"></text>
               <path
                  class="a11 weapon right-back lvl-2"
                  d="m 204.22194,152.86385 -10.68739,-5e-5 -5.34366,9.25549 5.34373,9.25554 z"
                  id="path4462" />
+              <text id="texta11" x="191.5" y="163" class="weapon-text"></text>
               <path
                  class="a12 weapon right-front lvl-2"
                  d="m 193.39723,87.60405 -5.34374,9.255526 5.34366,9.255484 10.6874,-3e-5 z"
                  id="path4462-3-1-0-0" />
+              <text id="texta12" x="191.5" y="103" class="weapon-text"></text>
               <path
                  class="a13 weapon right-front lvl-1"
                  d="m 206.58661,33.197878 -5.34374,9.255526 5.34366,9.255484 10.6874,-3e-5 z"
@@ -817,6 +839,11 @@
             var directs = {};
             var slots = {};
 
+            var weapsPerLvL = {
+                "lvl-1" : ['S', 'M', 'L'],
+                "lvl-2" : ['T', 'M'],
+                "lvl-3" : ['E'],
+            };
             window.onload = function() {
                 var anchors = document.getElementById('layer1').children;
                 for(var i = 0; i < anchors.length; i++) {
@@ -847,15 +874,16 @@
                 var weaps = document.getElementById('layer4').children;
                 for (var i = 0; i < weaps.length; i++) {
                     var weap = weaps[i];
+                    if (weap.tagName === "text")
+                        continue;
                     svgWeaps[weap.classList[0]] = weap;
                     weap.onclick = function(el) {
                         var t = el.target;
-                        var group = t.classList[0];
-                        if (t.classList.contains('sel')) {
-                            t.classList.remove('sel');
-                        }
-                        else if (directs[group] > 0) {
-                            t.classList.add('sel');
+                        if (t.classList.contains('armed')) {
+                            var list = weapsPerLvL[t.classList[3]];
+                            var el = document.getElementById('text' + t.classList[0]);
+                            var id = list.indexOf(el.innerHTML);
+                            el.innerHTML = list[(id + 1) % list.length];
                         }
                     }
                 }
@@ -972,15 +1000,20 @@
                     directs[group] = 0;
                 directs[group] += act;
 
-                if (directs[group] === 0 && svgWeaps[group].classList.contains('sel'))
-                    svgWeaps[group].classList.remove('sel');
-
                 var side = el.classList[1];
                 var lvl = el.classList[2];
 
+                if (directs[group] === 0 && svgWeaps[group].classList.contains('armed')) {
+                    svgWeaps[group].classList.remove('armed');
+                    document.getElementById('text' + group).innerHTML = "";
+                }
+                else if (directs[group] > 0 && !(svgWeaps[group].classList.contains('armed'))) {
+                    svgWeaps[group].classList.add('armed');
+                    document.getElementById('text' + group).innerHTML = weapsPerLvL[lvl][0];
+                }
+
                 var slotDiff = (directs[group] === 1 && act > 0) - (directs[group] === 0);
                 slots[lvl][side] += slotDiff;
-                console.log("directs[" + group + "] = " + directs[group]);
 
                 if (lvl === "lvl-1") {
                     setupTurretsTot(slotDiff);
