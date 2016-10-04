@@ -125,11 +125,27 @@
             </div>
             <div>
                 <label class="name">Export</label>
-                <textarea class="export" type="text" id="export-output" rows="10" readonly></textarea>
+                <textarea class="export" type="text" id="export-output" rows="10" onClick="this.select();" readonly></textarea>
             </div>
             <div>
                 <label class="name">Import</label>
-                <input class="input" id="import-input" type="text" oninput="importString(this)" onpaste="importString(this)"/>
+                <input class="input" id="import-input" type="text" onClick="this.select();" oninput="importString(this)" onpaste="importString(this)"/>
+            </div>
+            <div>
+                <label class="name">Small Preset (1000)</label>
+                <input class="input" type="text" value="#c43800;5;3;none;a14a;a14c;a15a;a15b;a17a;a17c;a18a;a18b;a20a;a20b;a21a;a21b;a23a;a23b;a24a;a24b;a25a;a25b;a25c;a27a;a27b;a27c;;a14-M;a15-M;a17-M;a18-M;a20-M;a21-M;a23-M;a24-M;a25-L;a27-L;" onClick="this.select();" readonly />
+            </div>
+            <div>
+                <label class="name">Medium Preset (1390)</label>
+                <input class="input" type="text" value="#c43800;7;1;none;a9a;a14a;a14b;a15a;a15b;a17a;a17b;a18a;a18b;a20a;a20b;a21a;a21b;a23a;a23b;a24a;a24b;a25a;a25b;a26a;a26c;;a9-B;a14-M;a15-M;a17-M;a18-M;a20-M;a21-M;a23-M;a24-M;a25-L;a26-L;" onClick="this.select();" readonly />
+            </div>
+            <div>
+                <label class="name">Medium Preset (1880)</label>
+                <input class="input" type="text" value="#c43800;7;2;none;a7a;a9a;a12a;a13a;a14a;a14c;a15a;a15b;a16a;a17a;a17c;a18a;a18b;a20a;a20b;a21a;a21b;a23a;a23b;a24a;a24b;a25a;a25b;a26a;a26c;a27a;a27b;a28a;a28c;;a7-T;a9-B;a12-T;a13-M;a14-M;a15-M;a16-M;a17-M;a18-M;a20-M;a21-M;a23-M;a24-M;a25-L;a26-L;a27-L;a28-L;" onClick="this.select();" readonly />
+            </div>
+            <div>
+                <label class="name">Large Preset (2480)</label>
+                <input class="input" type="text" value="#c43800;9;1;none;a3a;a3b;a6a;a6b;a13a;a13b;a13c;a14a;a14c;a15a;a15b;a15c;a16a;a16b;a16c;a17a;a17b;a18a;a18b;a18c;a19a;a19b;a19c;a20a;a20b;a21a;a21b;a21c;a22a;a22b;a22c;a23a;a23b;a24a;a24b;a24c;a25a;a25b;a26a;a26c;a27a;a27b;a28a;a28c;;a3-E;a6-E;a13-S;a14-M;a15-S;a16-S;a17-M;a18-S;a19-S;a20-M;a21-S;a22-S;a23-M;a24-S;a25-M;a26-M;a27-M;a28-M;" onClick="this.select();" readonly />
             </div>
         </div>
         <svg viewBox="0 0 286.67334 259.39105">
