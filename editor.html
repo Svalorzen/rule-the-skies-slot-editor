@@ -104,25 +104,9 @@
                 <label class="output" id="slot-output" />
             </div>
             <div>
-                <div>
-                    <label class="name">Total Turrets</label>
-                    <input class="input" id="tot-turret-output" type="text" value="0" readonly />
-                </div>
-                <div>
-                    <label class="name">Long Turrets</label>
-                    <input class="input" id="long-turret-input"   type="number" onClick="this.select();" oninput="setupTurrets(this, 'long')" value="0">
-                    <label class="output" id="long-turret-output" />
-                </div>
-                <div>
-                    <label class="name">Medium Turrets</label>
-                    <input class="input" id="medium-turret-input" type="number" onClick="this.select();" oninput="setupTurrets(this, 'medium')" value="0">
-                    <label class="output" id="medium-turret-output" />
-                </div>
-                <div>
-                    <label class="name">Short Turrets</label>
-                    <input class="input" id="short-turret-input"  type="number" onClick="this.select();" oninput="setupTurrets(this, 'short')" value="0">
-                    <label class="output" id="short-turret-output" />
-                </div>
+                <label class="name">Weapons</label>
+                <input class="input" style="visibility: hidden"/>
+                <label class="output" id="turret-output" />
             </div>
             <div>
                 <label class="name">Tech</label>
@@ -825,41 +809,41 @@
                  class="a25 weapon back lvl-1"
                  d="m 183.79786,233.05576 -5.34365,-9.25558 -10.68732,0 -5.34367,9.25558 z"
                  id="path4462-3-1-2" />
-              <text id="texta25" x="168.3" y="232" class="weapon-text">M</text>
+              <text id="texta25" x="168.3" y="232" class="weapon-text"></text>
               <path
                  class="a26 weapon back lvl-1"
                  d="m 124.17091,233.05577 -5.34365,-9.25558 -10.68732,0 -5.34367,9.25558 z"
                  id="path4462-3-1-7" />
-              <text id="texta26" x="108.5" y="232" class="weapon-text">M</text>
+              <text id="texta26" x="108.5" y="232" class="weapon-text"></text>
               <path
                  class="a27 weapon front lvl-1"
                  d="m 102.65888,26.61008 5.34365,9.25558 10.68732,0 5.34367,-9.25558 z"
                  id="path4462-3-1-0-9" />
-              <text id="texta27" x="108" y="35" class="weapon-text">M</text>
+              <text id="texta27" x="108" y="35" class="weapon-text"></text>
               <path
                  class="a28 weapon front lvl-1"
                  d="m 162.28585,26.610061 5.34365,9.25558 10.68732,0 5.34367,-9.25558 z"
                  id="path4462-3-1-0-3" />
-              <text id="texta28" x="168" y="35" class="weapon-text">M</text>
+              <text id="texta28" x="168" y="35" class="weapon-text"></text>
             </g>
         </svg>
 
         <script>
             var lvl1, lvl2, lvl3;
             var clIn, hpIn,  enIn,  thIn;
-            var turrIn = [];
-            var hpOut, enOut, diOut, slOut, thOut, ttOut;
-            var turrOut = [];
+            var hpOut, enOut, diOut, slOut, trOut, thOut, ttOut;
             var svgDirs = [];
             var svgWeaps = {};
             var directs = {};
             var slots = {};
+            var weaps = {};
 
             var weapsPerLvL = {
                 "lvl-1" : ['S', 'M', 'L'],
-                "lvl-2" : ['T', 'M'],
+                "lvl-2" : ['T', 'B'],
                 "lvl-3" : ['E'],
             };
+
             window.onload = function() {
                 var anchors = document.getElementById('layer1').children;
                 for(var i = 0; i < anchors.length; i++) {
@@ -879,27 +863,33 @@
                         var t = el.target;
                         if (t.classList.contains('sel')) {
                             t.classList.remove('sel');
-                            setupDirect(t, -1);
+                            setupDirect(t, -1, true);
                         }
                         else {
                             t.classList.add('sel');
-                            setupDirect(t, +1);
+                            setupDirect(t, +1, true);
                         }
                     }
                 }
-                var weaps = document.getElementById('layer4').children;
-                for (var i = 0; i < weaps.length; i++) {
-                    var weap = weaps[i];
+                var tmpWeaps = document.getElementById('layer4').children;
+                for (var i = 0; i < tmpWeaps.length; i++) {
+                    var weap = tmpWeaps[i];
                     if (weap.tagName === "text")
                         continue;
-                    svgWeaps[weap.classList[0]] = weap;
+                    var group = weap.classList[0];
+                    svgWeaps[group] = [weap, document.getElementById('text' + group)];
+                    weaps[group] = "";
                     weap.onclick = function(el) {
                         var t = el.target;
                         if (t.classList.contains('armed')) {
                             var list = weapsPerLvL[t.classList[3]];
-                            var el = document.getElementById('text' + t.classList[0]);
-                            var id = list.indexOf(el.innerHTML);
-                            el.innerHTML = list[(id + 1) % list.length];
+                            var grp = t.classList[0];
+                            var label = svgWeaps[grp][1];
+                            var id = list.indexOf(label.innerHTML);
+                            var newWeap = list[(id + 1) % list.length];
+                            label.innerHTML = newWeap;
+                            weaps[grp] = newWeap;
+                            computePoints();
                         }
                     }
                 }
@@ -912,23 +902,14 @@
                 hpIn = document.getElementById('hp-input');
                 enIn = document.getElementById('engine-input');
                 thIn = document.getElementById('tech-input');
-                turrIn = [
-                    document.getElementById('long-turret-input'),
-                    document.getElementById('medium-turret-input'),
-                    document.getElementById('short-turret-input')
-                ];
 
                 hpOut = document.getElementById('hp-output');
                 enOut = document.getElementById('engine-output');
                 diOut = document.getElementById('direction-output');
                 slOut = document.getElementById('slot-output');
+                trOut = document.getElementById('turret-output');
                 thOut = document.getElementById('tech-output');
                 ttOut = document.getElementById('total-output');
-                turrOut = [
-                    document.getElementById('long-turret-output'),
-                    document.getElementById('medium-turret-output'),
-                    document.getElementById('short-turret-output')
-                ];
 
                 slotCosts["back"] = slotCosts["front"];
                 slotCosts["left-back"]   = slotCosts["left-front"];
@@ -943,9 +924,9 @@
                         slots[lvls[lvl]][sides[side]] = 0;
                 }
 
+                setupColor(clIn);
                 eng = getInt(document.getElementById('engine-input').value, 1, 3);
                 tech = document.getElementById('tech-input').value;
-                setupTurretsTot(0);
                 setupSlots(document.getElementById('hp-input'));
             }
 
@@ -973,13 +954,13 @@
                     if (hide) {
                         arr[i].style.visibility = "hidden"
                         if (arr[i].classList.contains('sel')) {
-                            setupDirect(arr[i], -1);
+                            setupDirect(arr[i], -1, false);
                         }
                     }
                     else {
                         arr[i].style.visibility = "visible"
                         if (arr[i].classList.contains('sel')) {
-                            setupDirect(arr[i], +1);
+                            setupDirect(arr[i], +1, false);
                         }
                     }
                 }
@@ -1010,7 +991,7 @@
                 computePoints();
             }
 
-            function setupDirect(el, act) {
+            function setupDirect(el, act, doGraphics) {
                 var group = el.classList[0];
                 if (!(group in directs))
                     directs[group] = 0;
@@ -1019,68 +1000,24 @@
                 var side = el.classList[1];
                 var lvl = el.classList[2];
 
-                if (directs[group] === 0 && svgWeaps[group].classList.contains('armed')) {
-                    svgWeaps[group].classList.remove('armed');
-                    document.getElementById('text' + group).innerHTML = "";
+                if (doGraphics) {
+                    if (directs[group] === 0 && svgWeaps[group][0].classList.contains('armed')) {
+                        svgWeaps[group][0].classList.remove('armed');
+                        svgWeaps[group][1].innerHTML = "";
+                    }
+                    else if (directs[group] > 0 && !(svgWeaps[group][0].classList.contains('armed'))) {
+                        svgWeaps[group][0].classList.add('armed');
+                        svgWeaps[group][1].innerHTML = weapsPerLvL[lvl][0];
+                    }
                 }
-                else if (directs[group] > 0 && !(svgWeaps[group].classList.contains('armed'))) {
-                    svgWeaps[group].classList.add('armed');
-                    document.getElementById('text' + group).innerHTML = weapsPerLvL[lvl][0];
-                }
+
+                if (directs[group] === 0)
+                    weaps[group] = "";
+                else
+                    weaps[group] = svgWeaps[group][1].innerHTML;
 
                 var slotDiff = (directs[group] === 1 && act > 0) - (directs[group] === 0);
                 slots[lvl][side] += slotDiff;
-
-                if (lvl === "lvl-1") {
-                    setupTurretsTot(slotDiff);
-                }
-
-                computePoints();
-            }
-
-            var gunTurretsTot = 0;
-            function setupTurretsTot(diff) {
-                gunTurretsTot += diff;
-                document.getElementById('tot-turret-output').value = gunTurretsTot;
-
-                if (diff < 0) {
-                    var tot = 0;
-                    for (var i = 0; i < gunTurrets.length; ++i)
-                        tot += gunTurrets[i];
-                    if (tot > gunTurretsTot) {
-                        diff = gunTurretsTot - tot;
-                        for (var i = 0; i < gunTurrets.length; ++i) {
-                            gunTurrets[i] += diff;
-                            diff = gunTurrets[i];
-
-                            gunTurrets[i] = Math.max(0, gunTurrets[i]);
-                            turrIn[i].value = gunTurrets[i];
-                            if (diff >= 0)
-                                break;
-                        }
-                        computePoints();
-                    }
-                }
-            }
-
-            var ranges = ["long", "medium", "short"];
-            var gunTurrets = [0, 0, 0];
-            function setupTurrets(el, range) {
-                if (el.value < 0) {
-                    el.value = 0;
-                    return;
-                }
-                var value = getInt(el.value, 0, gunTurretsTot);
-                var id = ranges.indexOf(range);
-                var tot = 0;
-                for (var i = 0; i < gunTurrets.length; ++i)
-                    tot += gunTurrets[i];
-                if (tot >= gunTurretsTot && value >= gunTurrets[id]) {
-                    el.value = gunTurrets[id];
-                    return;
-                }
-                gunTurrets[id] = value;
-                el.value = value;
 
                 computePoints();
             }
@@ -1098,10 +1035,16 @@
                 }
             }
             var hpCosts = [30, 60, 90, 120, 150, 200, 250, 300];
+            //                  sm    med  larg
+            var engineCosts = [[120,  180, 250],
+                              [ 150,  230, 350],
+                              [ 200,  300, 500]];
+
             var directCosts = [5, 15, 25];
-            var engineCosts = [[100, 120, 150],
-                              [120, 150, 200],
-                              [150, 200, 300]];
+
+            var allWeaps = ['S', 'M', 'L', 'T', 'B', 'E']
+            var weapCosts = [10,  25,  30,  30,  25,  50]
+
             var techCosts = {
                 "none" : 0,
                 "radar" : 120,
@@ -1139,19 +1082,15 @@
                 slOut.innerHTML = tmp;
                 total += tmp;
                 // Turrets;
-                var id = ranges.indexOf('long');
-                tmp = gunTurrets[id] * 30;
-                turrOut[id].innerHTML = tmp;
-                total += tmp;
-
-                id = ranges.indexOf('medium');
-                tmp = gunTurrets[id] * 25;
-                turrOut[id].innerHTML = tmp;
-                total += tmp;
-
-                id = ranges.indexOf('short');
-                tmp = gunTurrets[id] * 10;
-                turrOut[id].innerHTML = tmp;
+                tmp = 0;
+                for (var key in weaps) {
+                    if(!weaps.hasOwnProperty(key))
+                        continue;
+                    var weapon = weaps[key];
+                    if (weapon != "")
+                        tmp += weapCosts[allWeaps.indexOf(weapon)];
+                }
+                trOut.innerHTML = tmp;
                 total += tmp;
                 // Tech
                 tmp = techCosts[tech];
@@ -1170,14 +1109,21 @@
                 exStr += hpIn.value + ";";
                 exStr += enIn.value + ";";
                 exStr += thIn.value + ";";
-                for (var i = 0; i < gunTurrets.length; ++i)
-                    exStr += gunTurrets[i] + ";";
+
                 for (var i = 0; i < svgDirs.length; ++i) {
                     if (svgDirs[i].classList.contains('sel') &&
                         svgDirs[i].style.visibility != "hidden")
                     {
                         exStr += svgDirs[i].id + ";";
                     }
+                }
+                exStr += ";";
+                for (var key in weaps) {
+                    if(!weaps.hasOwnProperty(key))
+                        continue;
+                    var weapon = weaps[key];
+                    if (weapon != "")
+                        exStr += key + "-" + weapon + ";";
                 }
 
                 document.getElementById('export-output').value = exStr;
@@ -1196,17 +1142,23 @@
                 setupEngine(enIn);
                 setupTech(thIn);
 
-                for (var i = 4 + gunTurrets.length; i < arr.length; ++i) {
+                var i = 4;
+                for (; i < arr.length; ++i) {
                     if (!arr[i])
-                        continue;
+                        break;
                     var el = document.getElementById(arr[i]);
                     el.onclick({target: el});
                 }
-
-                for (var i = 0; i < gunTurrets.length; ++i) {
-                    turrIn[i].value = arr[i + 4];
-                    setupTurrets(turrIn[i], ranges[i]);
+                for (i++; i < arr.length; ++i) {
+                    if (!arr[i])
+                        break;
+                    var info = arr[i].split('-');
+                    var label = document.getElementById('text' + info[0]);
+                    console.log(info)
+                    label.innerHTML = info[1];
+                    weaps[info[0]] = info[1];
                 }
+                computePoints();
             }
         </script>
     </body>
